@@ -8,7 +8,7 @@
 			<result>/mainsys.jsp</result>
 		</action> 
 		
-		<action name="dologsys" method="dologsys" class="com.sr.facorder.server.staff.action.StaffAction">
+		<action name="ht" method="dologsys" class="com.sr.facorder.server.staff.action.StaffAction">
 			<result>/loginsys.jsp</result>
 		</action>
 		<action name="toOrderCollect" method="toOrderCollect" class="com.sr.facorder.server.staff.action.StaffAction">
