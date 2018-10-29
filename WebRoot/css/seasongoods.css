@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+.searchgood {
+    padding: 10px;
+    background-color: #fff;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 49px;
+    z-index: 800;
+}
+.searchgood i {
+    position: absolute;
+    left: 95px;
+    bottom: 18px;
+    color: #039;
+}
+.searchgood input {
+    padding: 5px 10px 5px 30px;
+    border-radius: 4px;
+    border: 1px solid #039;
+    width: 75%;
+}
+.searchgood label{
+	width:20%;
+}
+.urgentlist{
+	padding-bottom:10px;
+}
+.urgentlist .orderinfo{
+	float:left;
+	width:50%;
+}
+.urgentlist .endData{
+	text-align:right;
+}
+.noinfo{
+	text-align:center;
+	margin-top:25%;
+}

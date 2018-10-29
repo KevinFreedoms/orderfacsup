@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	<!-- 把Service注入给DAO -->
+	<bean id="customerService" class="com.sr.facorder.server.customer.service.impl.CustomerService">
+		<property name="customerDao" ref="customerDao"/>
+		<property name="sqlDao" ref="sqlDao"/>
+	</bean>
+	
+	<bean id="mainService" class="com.sr.facorder.server.main.service.impl.MainService">
+		<property name="mainDao" ref="mainDao"/>
+	</bean>
+	
+	<bean id="bookingService" class="com.sr.facorder.server.booking.service.impl.BookingService">
+		<property name="bookingDao" ref="bookingDao"/>
+		<property name="mainDao" ref="mainDao"/>
+	</bean>
+	
+	<bean id="historyService" class="com.sr.facorder.server.booking.service.impl.HistoryService">
+		<property name="bookingDao" ref="bookingDao"/>
+	</bean>
+	
+	<bean id="messageService" class="com.sr.facorder.server.message.service.impl.MessageService">
+		<property name="messageDao" ref="messageDao"/>
+	</bean>
+	
+	<bean id="deliveryService" class="com.sr.facorder.server.delivery.service.impl.DeliveryService">
+		<property name="deliveryDao" ref="deliveryDao"></property>
+	</bean>
+	
+	<bean id="bigMouldService" class="com.sr.facorder.server.BigMould.service.impl.BigMouldService">
+		<property name="bigMouldDao" ref="bigMouldDao"></property>
+		<property name="bookingDao" ref="bookingDao"/>
+		<property name="mainDao" ref="mainDao"/>
+	</bean>
+	<bean id="seasonService" class="com.sr.facorder.server.season.service.impl.SeasonServiceImpl">
+		<property name="seasonDao" ref="seasonDao"></property>
+	</bean>
+	<bean id="distributeService" class="com.sr.facorder.server.distribute.service.impl.DistributeServiceImpl">
+		<property name="distributeDao" ref="distributeDao"></property>
+	</bean>
+	<bean id="staffService" class="com.sr.facorder.server.staff.service.impl.StaffService">
+		<property name="sqlDao" ref="sqlDao"/>
+	</bean>
+</beans>

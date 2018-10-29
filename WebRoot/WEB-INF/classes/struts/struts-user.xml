@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="customer" namespace="/facorder/customer" extends="struts-default,json-default">
+		<action name="toIndex" method="toIndex" class="com.sr.facorder.server.customer.action.CustomerAction">
+			<result>/main.jsp</result>
+		</action>
+		
+		<action name="dologout" method="dologout" class="com.sr.facorder.server.customer.action.CustomerAction">
+			<result>/login.jsp</result>
+		</action>
+		
+		<action name="dologin" method="dologin" class="com.sr.facorder.server.customer.action.CustomerAction">
+			 <!-- 返回json格式的结果 -->
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="doPassword" method="doPassword" class="com.sr.facorder.server.customer.action.CustomerAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

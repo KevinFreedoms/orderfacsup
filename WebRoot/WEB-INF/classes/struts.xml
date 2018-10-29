@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 把struts2的对象工厂设置为spring -->
+	<constant name="struts.action.extension" value="action,do,xls,php,asp" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.custom.i18n.resources" value="msgs"/>
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<include file="struts/struts-user.xml"></include>
+	<include file="struts/struts-main.xml"></include>
+	<include file="struts/struts-delivery.xml"></include>
+	<include file="struts/struts-history.xml"></include>
+	<include file="struts/struts-message.xml"></include>
+	<include file="struts/struts-order.xml"></include>
+	<include file="struts/struts-bigMould.xml"></include>
+	<include file="struts/struts-season.xml"></include>
+	<include file="struts/struts-distribute.xml"></include>
+	<include file="struts/struts-cservice.xml"></include>
+	<include file="struts/struts-staff.xml"></include>
+</struts>

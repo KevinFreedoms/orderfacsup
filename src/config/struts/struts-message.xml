@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="message" namespace="/facorder/message" extends="struts-default,json-default">
+		<!-- 显示消息列表 -->
+		<action name="toMessageList" method="toMessageList" class="com.sr.facorder.server.message.action.MessageAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--显示通知信息 -->
+		<action name="toMessageInfoById" method="toMessageInfoById" class="com.sr.facorder.server.message.action.MessageAction">
+			<!-- 返回json格式的结果 -->
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="toMessageInfo" method="toMessageInfo" class="com.sr.facorder.server.message.action.MessageAction">
+			<!-- 返回json格式的结果 -->
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--显示通知信息 -->
+		<action name="toCheckMessage" method="toCheckMessage" class="com.sr.facorder.server.message.action.MessageAction">
+			<result>/${url}</result>
+		</action>
+		
+		<!-- 进入通知界面 -->
+		<action name="toMessage" method="toMessage" class="com.sr.facorder.server.message.action.MessageAction">
+			<result>/message.jsp</result>
+		</action>
+		
+	</package>
+</struts>

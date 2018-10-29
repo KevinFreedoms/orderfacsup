@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="staff" namespace="/facorder/staff" extends="struts-default,json-default">
+		 <action name="toMainsys" method="toMainsys" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result>/mainsys.jsp</result>
+		</action> 
+		
+		<action name="dologsys" method="dologsys" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result>/loginsys.jsp</result>
+		</action>
+		<action name="toOrderCollect" method="toOrderCollect" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result>/orderCollect.jsp</result>
+		</action>
+		<action name="toOrderDetail" method="toOrderDetail" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result>/orderDetail.jsp</result>
+		</action>
+		
+		<action name="dologinsys" method="dologinsys" class="com.sr.facorder.server.staff.action.StaffAction">
+			 <!-- 返回json格式的结果 -->
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="doPassword" method="doPassword" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		<action name="getOrg" method="getOrg" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		<action name="getOrderSelect" method="getOrderSelect" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		<action name="getOrderCollect" method="getOrderCollect" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		<action name="getOrderDetail" method="getOrderDetail" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		<action name="searchOrder" method="searchOrder" class="com.sr.facorder.server.staff.action.StaffAction">
+			<result>/searchOrder.jsp</result>
+		</action> 
+	</package>
+</struts>

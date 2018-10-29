@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean class="com.sr.facorder.server.staff.sql.StaffSQL">
+		<property name="SQL_FIND_STAFF">
+			<value>
+				<![CDATA[
+					SELECT 
+						staffid,staffName,roleid
+					FROM
+						EB_Staff
+					WHERE
+						staffId=:staffId
+					AND
+						ref1=:password
+					AND
+						isUsing='1'
+				]]>
+			</value>
+		</property> 
+		<property name="SQL_FIND_ROLEFUNCTION">
+			<value>
+				<![CDATA[
+					SELECT
+						functionName,operation,ref2 
+					FROM 
+						EB_RoleFunction 
+					WHERE 
+						roleId=:roleId 
+					AND 
+						isUsing='1'
+				]]>
+			</value>
+		</property>
+		<property name="SQL_UPDATE_STAFF">
+			<value>
+				<![CDATA[
+					UPDATE
+						EB_Staff
+					SET
+						ref1=:newPassword,
+						lastupDate=GETDATE()
+					WHERE
+						staffId=:staffId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_ORGNAME">
+			<value>
+				<![CDATA[
+					SELECT 
+						orgId,orgName 
+					FROM 
+						EP_Org
+					ORDER BY 
+					orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_SUMPRICEANDSUMORDER">
+			<value>
+				<![CDATA[
+					SELECT 
+						c.orgId,c.orgName,COUNT(c.orderId) goodsNum,isnull(SUM(cast(isnull(NULLIF(c.ref2,''),0) as decimal(11,2))),0) sumMoney 
+					FROM 
+						EB_OrderCollect c 
+					LEFT JOIN 
+						EP_OrderLog l 
+ 					ON 
+ 						c.orderId=l.pk
+ 					WHERE 
+						l.status=:status
+					AND ('all'=:lastupdate or (c.lastupdate >=:lastupdateS AND c.lastupdate <=:lastupdateE))
+					AND ('all'=:orgId or c.orgId =:orgId) 
+					AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  group by c.orgId,c.orgName
+					ORDER BY c.orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_SUMGOODS">
+			<value>
+				<![CDATA[
+					SELECT
+						orgId,COUNT(a.goodsid) goodsType
+					FROM
+ 						(SELECT c.orgId,c.orgName,d.goodsId,d.goodsName 
+ 						FROM
+							EB_OrderCollect c 
+						LEFT JOIN 
+							EP_OrderLog l 
+ 						ON
+ 							c.orderId=l.pk
+						LEFT JOIN 
+							EB_OrderDetail d
+						ON 
+							c.orderId=d.orderId
+						WHERE 
+						l.status=:status
+						AND ('all'=:lastupdate or (c.lastupdate >=:lastupdateS AND c.lastupdate <=:lastupdateE))
+ 						AND ('all'=:orgId or c.orgId =:orgId)
+						AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  
+						GROUP BY c.orgId,c.orgName,d.goodsId,d.goodsName) a 
+					GROUP BY a.orgId
+					ORDER BY orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_SUMPRICEANDSUMORDERF">
+			<value>
+				<![CDATA[
+					SELECT 
+						c.orgId,c.orgName,COUNT(c.orderId) goodsNum,isnull(SUM(cast(isnull(NULLIF(c.ref2,''),0)as decimal(11,2))),0) sumMoney 
+					FROM 
+						EB_OrderCollect c 
+					LEFT JOIN 
+						EP_OrderLog l 
+ 					ON 
+ 						c.orderId=l.pk
+ 					WHERE 
+						l.status=:status
+					AND ('all'=:orgId or c.orgId =:orgId) 
+					AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  group by c.orgId,c.orgName
+					ORDER BY orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_SUMGOODSF">
+			<value>
+				<![CDATA[
+					SELECT
+						orgId,COUNT(a.goodsid) goodsType
+					FROM
+ 						(SELECT c.orgId,c.orgName,d.goodsId,d.goodsName 
+ 						FROM
+							EB_OrderCollect c 
+						LEFT JOIN 
+							EP_OrderLog l 
+ 						ON
+ 							c.orderId=l.pk
+						LEFT JOIN 
+							EB_OrderDetail d
+						ON 
+							c.orderId=d.orderId
+						WHERE 
+						l.status=:status
+ 						AND ('all'=:orgId or c.orgId =:orgId)
+						AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  
+						GROUP BY c.orgId,c.orgName,d.goodsId,d.goodsName) a 
+					GROUP BY a.orgId
+					ORDER BY orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_ORDERCOLLECT">
+			<value>
+				<![CDATA[
+				SELECT 
+					c.orgId,orderId,mouldName,status,c.ref2,c.deliveryDate,c.orgName
+				FROM  
+					EP_OrderLog l ,EB_OrderCollect c 
+				WHERE
+					l.pk=c.orderId
+				AND l.status=:status
+				AND c.lastupdate >=:lastupdateS AND c.lastupdate <=:lastupdateE
+				AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  
+				AND c.orgId=:orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_ORDERCOLLECTF">
+			<value>
+				<![CDATA[
+				SELECT 
+					c.orgId,orderId,mouldName,status,c.ref2,c.deliveryDate,c.orgName
+				FROM  
+					EP_OrderLog l ,EB_OrderCollect c 
+				WHERE
+					l.pk=c.orderId
+				AND l.status=:status
+				AND c.deliveryDate=dateadd(DAY,:addDay,:deliveryDate)  
+				AND c.orgId=:orgId
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_ORDERDETAIL">
+			<value>
+				<![CDATA[
+				SELECT 
+					c.orderId,d.goodsName,d.count,d.deliverPrice
+				FROM 
+					EB_OrderCollect c LEFT JOIN EB_OrderDetail d
+				ON 
+					c.orderId=d.orderId
+				WHERE
+					c.orderId=:orderId
+				]]>
+			</value>
+		</property>
+	</bean>	
+</beans>

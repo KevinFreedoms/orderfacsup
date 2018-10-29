@@ -1,0 +1,194 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	font-size:1.1rem;
+}
+.unitdate{
+	height:500px;
+	overflow-y:scroll;}
+.unitdate li{
+	padding:8px;
+	border-bottom:1px solid #eee;
+	text-align:center;
+}
+.maincontent h4{
+	text-align:center;
+	font-family:"微软雅黑";
+	font-weight:bold;
+	font-size:14px;
+}
+.table>thead>tr>th{
+	vertical-align:middle;
+	border-left:0px;
+}
+.unitdate li a{
+	color:#000;
+}
+.selected{ 
+    background: none repeat scroll 0 0 #3498db;
+    color: #fff;
+    position: relative;
+}
+.unitdate .selected a{
+	color:#fff;
+}
+a{
+	color:#000;
+}
+.unitdate li:hover{
+	background:none repeat scroll 0 0 #ecf0f1;
+	color:#000;
+	cursor:pointer;
+}
+.unitdate li a:hover{
+	text-decoration:none;
+	color:#000;
+
+}
+.unitdate .selected:hover{
+	background: none repeat scroll 0 0 #3498db;
+    color: #000;
+}
+.unitdate .selected a:hover{
+	color:#fff;
+}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td{
+	border-bottom-width:1px;
+}
+.special{
+	background-color:#ecf0f1;}
+#ordermanager{
+	padding:0px 30px;
+}
+.table{
+	margin-bottom:0px;
+}
+.table tbody tr:hover {
+    background-color: #fff;
+}
+.table tbody tr td{
+	height:44px;
+	padding:0px;
+	position:relative;
+}
+.editpro,.type{  
+	width:100%;
+	height:100%;
+	text-align:center; 
+	border:0px!important;
+}
+.theadDiv {
+    position: relative;
+    border-bottom: 0px;
+    overflow: hidden;
+}
+.tbHeadFix {
+    position: relative;
+    overflow: hidden;
+    color: #000;
+	border:1px solid #ddd;
+}
+.tbodyDiv {
+    border-top: 0px;
+    background: #fff;
+    overflow-y: auto;
+    position: relative;
+}
+.tbodyDiv tr:first-child{
+	border-top:0px;
+}
+.tbodyDiv tr td:first-child{
+	border-left:0px;
+} 
+.tbodyDiv .table{
+	border-left:0px;
+	border-style:none;
+	}
+.display{
+	display:none;
+}
+/*.buttonSearch{
+	padding: 5px 25px!important;
+    border: 1px solid #AAAAEE;
+    color: #1155BB;
+    font-size: 14px;
+    font-weight: bold;
+    background: #FFF;
+    cursor: pointer;
+}*/
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+	vertical-align:middle!important;
+}
+.close{
+	color:#fff;
+	opacity:1;
+	font-weight:normal;
+}
+.close:hover, .close:focus{
+	color:#fff;
+	opacity:1;
+}
+/***********************************************日历**********************/
+.chosetime{
+	width:60%; 
+    position:absolute;
+	top:29px;
+	border:1px solid #ccc; 
+	margin-left:30px; 
+	z-index:100; 
+	background-color:#fff;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+ .datalist{
+	 margin-bottom:0px;
+}
+.datalist li{
+	padding:10px;
+	border-bottom:1px solid #eee;
+}
+.display{
+	display:none;
+}
+.clearfloat {
+	clear:both;
+}
+a:hover{
+	text-decoration:none;
+}
+.settime li{
+	padding:5px 0px;
+}
+ul li{
+	cursor:pointer;
+}
+.datatime{
+	height:29px; 
+	width:60%; 
+	float:left;
+	margin-right:10px;
+	cursor:pointer;
+	font-size:1.1rem!important;
+}
+.showlist{
+	padding:2px;
+	border:1px solid #ccc;
+	border-color:#7c7c7c #C3C3C3 #ddd;
+}
+.settime{
+	border:1px solid #ccc;
+	position:absolute; 
+	width:100%; 
+	height:164px; 
+	background-color:#fff
+}
+ .withoutdata{
+	text-align:center;
+	color: #999;
+	margin-top:15%;
+	font-size: medium;
+ }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="bigMould" namespace="/facorder/bigMould" extends="struts-default,json-default">
+		<!-- 超大模板页面跳转 -->
+		<action name="toBigPage" method="toBigPage" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 进入电脑超大模板界面 -->
+		<action name="toPcBigMould" method="toPcBigMould" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result>/PC/bigmould.jsp</result>
+		</action>
+		
+		<!-- 进入超大模板界面 -->
+		<action name="toBigMould" method="toBigMould" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result>/bigmould.jsp</result>
+		</action>
+		
+		<!-- 获取数据源 -->
+		<action name="toGetAllGoods" method="toGetAllGoods" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 类别搜索单品-->
+		<action name = "findmincheng" method ="findminchengOrder" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 搜索模板下单品-->
+		<action name = "srearchg" method ="toSearchGoods" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 显示昨日订单 -->
+		<action name = "toListYestodayOrder" method = "toListYestodayOrder" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name = "getIsRetailPrice" method = "getIsRetailPrice" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 打印 -->
+		<action name = "print" method = "print" class="com.sr.facorder.server.BigMould.action.BigMouldAction">
+			<result>/PC/print.jsp</result>
+		</action>
+	</package>
+</struts>

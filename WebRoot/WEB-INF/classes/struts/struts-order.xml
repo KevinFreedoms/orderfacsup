@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="booking" namespace="/facorder/booking" extends="struts-default,json-default">
+		<!-- 列出已生成请货单据 -->
+		<action name="toListOrder" method="toListOrder" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="info" method="toBookingInfo" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result>/bookingdetail.jsp</result>
+		</action>
+		
+		<!-- 显示套餐组成明细 -->
+		<action name="toShowGoodsInfo" method="toShowGoodsInfo" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 根据模板生成订单 -->
+		<action name = "doCreateOrder" method = "doCreateOrder" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 修改订单 -->
+		<action name = "doModifyOrder" method = "doModifyOrder" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 修改订单 -->
+		<action name = "doDeleteOrder" method = "doDeleteOrder" class="com.sr.facorder.server.booking.action.BookingAction">
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 显示直送作业 -->
+		<action name="toListDelivery" method="toListDelivery" class="com.sr.facorder.server.delivery.action.DeliveryAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		
+	</package>
+</struts>

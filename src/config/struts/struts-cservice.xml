@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="cservice" namespace="/facorder/cservice" extends="struts-default,json-default">
+	
+	  <action name="toProblemCollect" method="toProblemCollect" class="com.sr.facorder.server.cservice.action.ProblemAction">
+			<result>/PC/afterservice.jsp</result>
+	  </action>
+	  <action name="doGetProblemCollect" method="doGetProblemCollect" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	  <action name="doGetProblemDetail" method="doGetProblemDetail" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	  <action name="doDeleteProblem" method="doDeleteProblem" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	  <action name="doSaveProblem" method="doSaveProblem" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	  <action name="doUpdateProblem" method="doUpdateProblem" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	  <action name = "doUploadImage" method = "doUploadImage" class="com.sr.facorder.server.cservice.action.ProblemAction">
+			<param name="uploadDir">uploadImages</param>
+			<result type = "json">
+				<param name="root">result</param>
+			</result>
+	  </action>
+	  <action name="toFactoryPage" method="toFactoryPage" class="com.sr.facorder.server.cservice.action.ProblemAction">
+			<result>/PC/HDafterservice.jsp</result>
+	  </action>
+	  <action name="doUpdateReplyInfo" method="doUpdateReplyInfo" class="com.sr.facorder.server.cservice.action.ProblemAction">
+	   		<result type="json">
+				<param name="root">result</param>
+	  		</result>
+	  </action>
+	 
+	  
+	  
+		
+	</package>
+</struts>

@@ -1,0 +1,89 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"> 
+	<!-- 把数据源注入给Session工厂 -->		
+	<!-- Hibernate -->
+	<bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.use_sql_comments">false</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
+            </props>  
+        </property> 
+        <!-- 注解方式配置 -->
+        <property name="mappingResources">  
+            <list>
+           		<!-- customer -->
+            	<value>com/sr/facorder/server/customer/pojo/EbOrgState.hbm.xml</value>
+            	<value>com/sr/facorder/server/customer/pojo/EbUser.hbm.xml</value>
+            	<value>com/sr/facorder/server/customer/pojo/EpMouldOrg.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EpOrg.hbm.xml</value>
+            	<!-- order -->
+            	<value>com/sr/facorder/server/main/pojo/EpMould.hbm.xml</value>
+            	<value>com/sr/facorder/server/main/pojo/EpDelivery.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EpProduct.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EbOrderCollect.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EbOrderDetail.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EpOrderLog.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EpOrderMould.hbm.xml</value>
+            	<value>com/sr/facorder/server/booking/pojo/EpMouldGoodsDelPrice.hbm.xml</value>
+            	<!-- message -->
+            	<value>com/sr/facorder/server/message/pojo/EpInfrom.hbm.xml</value>
+            	<!-- delivery -->
+            	<value>com/sr/facorder/server/delivery/pojo/EpDeliveryGoods.hbm.xml</value>
+            	<!-- bigMould -->
+            	<value>com/sr/facorder/server/BigMould/pojo/EpOrderMouldGcateGory.hbm.xml</value>
+            	<!-- season -->
+            	<value>com/sr/facorder/server/season/pojo/EpGoodsSeason.hbm.xml</value>
+            	<!-- distribute -->
+            	<value>com/sr/facorder/server/distribute/pojo/EpDeliveryCollect.hbm.xml</value>
+            	<value>com/sr/facorder/server/distribute/pojo/EpDeliveryDetail.hbm.xml</value>
+            	<!-- 不启用采购品台 jiaself 2017-03-20 -->
+            	<value>com/sr/facorder/server/delivery/pojo/EpSynState.hbm.xml</value>
+            	
+            </list>  
+        </property>  
+	</bean>
+	<!-- 把Session工厂注入给hibernateTemplate -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 把数据源注入给sqlArcher -->	
+	<bean id="sqlBaseDao" class="com.sqlArcher.server.dao.base.BaseDao" abstract="true">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean id="baseDao" class="com.sr.order.common.dao.BaseDAO" abstract="true" parent="sqlBaseDao">
+		<property name="hibernateTemplate" ref="hibernateTemplate"/>
+	</bean>
+	<bean id="sqlDao" class="com.sqlArcher.server.dao.impl.SQLDao" parent="sqlBaseDao"/>
+	<!-- 网点用户 -->
+	<bean id="customerDao" class="com.sr.facorder.server.customer.dao.CustomerDao" parent="baseDao"/>
+	<!-- 管理 -->
+	<bean id="mainDao" class="com.sr.facorder.server.main.dao.MainDao" parent="baseDao"/>
+	<!-- 订单 -->
+	<bean id="bookingDao" class="com.sr.facorder.server.booking.dao.BookingDao" parent="baseDao"/>
+	<!-- 消息 -->
+	<bean id="messageDao" class="com.sr.facorder.server.message.dao.MessageDAO" parent="baseDao"/>
+	<!-- 直送 -->
+	<bean id="deliveryDao" class="com.sr.facorder.server.delivery.dao.DeliveryDao" parent="baseDao"/>
+	<!-- 超大模板 -->
+	<bean id="bigMouldDao" class="com.sr.facorder.server.BigMould.dao.BigMouldDao" parent="baseDao"></bean>
+	<!-- 季节单品 -->
+	<bean id="seasonDao" class="com.sr.facorder.server.season.dao.SeasonDao" parent="baseDao"></bean>
+	<!-- 配送收货 -->
+	<bean id="distributeDao" class="com.sr.facorder.server.distribute.dao.DistributeDao" parent="baseDao"></bean>
+</beans>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="manager" namespace="/facorder/manager" extends="struts-default,json-default">
+		<!-- 进入移动分货功能界面 -->
+		<action name="toOrder" method="toOrder" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/order.jsp</result>
+		</action>
+		
+		<!-- 进入电脑管理界面 -->
+		<action name="toPcMain" method="toPcMain" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/PC/main.jsp</result>
+		</action>
+		
+		<!-- 进入电脑历史界面 -->
+		<action name="toPcHistory" method="toPcHistory" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/PC/history.jsp</result>
+		</action>
+		
+		<!-- 进入电脑直送界面 -->
+		<action name="toPcDelivery" method="toPcDelivery" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/PC/delivery.jsp</result>
+		</action>
+		
+		<!-- 进入电脑消息界面 -->
+		<action name="toPcMessage" method="toPcMessage" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/PC/message.jsp</result>
+		</action>
+		
+		<!-- 进入电脑超大模板界面 -->
+		<action name="toPcBigMould" method="toPcBigMould" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/PC/bigmould.jsp</result>
+		</action>
+		<!-- 进入超大模板界面 -->
+		<action name="toBigMould" method="toBigMould" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/bigmould.jsp</result>
+		</action>
+		
+		<!-- 进入直送作业界面 -->
+		<action name="toDelivery" method="toDelivery" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/delivery.jsp</result>
+		</action>
+		
+		<!-- 进入历史查询界面 -->
+		<action name="toHistory" method="toHistory" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/history.jsp</result>
+		</action>
+
+		<!-- 进入经营日报表查询界面-->
+		<action name="toOrderForms" method="toOrderForms" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/orderform.jsp</result>
+		</action>
+		
+		<!-- 进入通知管理界面-->
+		<action name="toMessage" method="toMessage" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/messagelist.jsp</result>
+		</action>
+		
+		<!-- 进入修改密码 -->
+		<action name="toRestPassword" method="toRestPassword" class="com.sr.facorder.server.main.action.MainAction">
+			<result>/resetpassword.jsp</result>
+		</action>
+		
+		<!-- 显示配送模板-->
+		<action name="toListDelMoulds" method="toListDelMoulds" class="com.sr.facorder.server.main.action.MainAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 显示模板配送周期-->
+		<action name="toListDelTime" method="toListDelTime" class="com.sr.facorder.server.main.action.MainAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

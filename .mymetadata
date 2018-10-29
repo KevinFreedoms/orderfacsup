@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="orderfacly"
+  id="myeclipse.1457917133194"
+  context-root="/orderfacnew"
+  j2ee-spec="6.0"
+  archive="orderfacly.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

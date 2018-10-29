@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean class="com.sr.facorder.server.booking.sql.BookingSQL">
+		<property name="SQL_SHOW_MOULD">
+			<value>
+				<![CDATA[
+					SELECT  d.goodsid AS goodsId,
+							d.goodsname AS goodsName,
+							d.packingName AS packingName,
+							d.standards AS standards,
+							ISNULL(t.deliveryPrice,0) AS deliverPrice,
+							d.singlePacking AS singlePacking,
+							packingCount,
+							packingType,
+							goodsFlag,
+							retailPrice
+					FROM	EP_OrgPriceRange t,EP_OrderMould d left join  (SELECT goodsId FROM EP_GoodsSeason WHERE :date < startDate OR :date > endDate) s on d.goodsid=s.goodsId
+					WHERE   d.mouldId=:mouldid AND 
+							orgRange LIKE '%'+:orgid+'%' AND
+							d.goodsid = t.goodsid AND
+							LEFT(date,LEN(:moulddate)) = :moulddate AND
+							LEFT(d.goodsid,LEN(:goodid)) = :goodid AND
+							s.goodsId IS NULL
+				]]>
+			</value>
+		</property> 
+		<property name="SQL_SHOW_BIGMOULD">
+			<value>
+				<![CDATA[
+					SELECT  d.goodsid AS goodsId,
+							d.goodsname AS goodsName,
+							d.packingName AS singlePacking,
+							d.standards AS standards,
+							0 AS count,
+							ISNULL(t.deliveryPrice,0) AS price,
+							0 AS goodsType,
+							retailPrice
+					FROM	EP_OrgPriceRange t,EP_OrderMould d left join  (SELECT goodsId FROM EP_GoodsSeason WHERE :date < startDate OR :date > endDate) s on d.goodsid=s.goodsId
+					WHERE   d.mouldId=:mouldid AND 
+							orgRange LIKE '%'+:orgid+'%' AND
+							d.goodsid = t.goodsid AND
+							LEFT(d.goodsId,LEN(:categoryid))=:categoryid AND
+							s.goodsId IS NULL
+				]]>
+			</value>
+		</property>
+		<property name="SQL_SEARCH_MOULD">
+			<value>
+				<![CDATA[
+					SELECT  d.goodsid AS goodsId,
+							d.goodsname AS goodsName,
+							d.packingName AS singlePacking,
+							d.standards AS standards,
+							0 AS count,
+							ISNULL(t.deliveryPrice,0) AS price,
+							0 AS goodsType,
+							retailPrice
+					FROM	EP_OrgPriceRange t,EP_OrderMould d left join  (SELECT goodsId FROM EP_GoodsSeason WHERE :date < startDate OR :date > endDate) s on d.goodsid=s.goodsId
+					WHERE   d.mouldId=:mouldid AND 
+							orgRange LIKE '%'+:orgid+'%' AND
+							d.goodsid = t.goodsid AND
+							d.goodsname LIKE '%'+:goodsname+'%' AND
+							s.goodsId IS NULL
+				]]>
+			</value>
+		</property>
+		<property name="SQL_SHOW_ORGMOULD">
+			<value>
+				<![CDATA[
+					SELECT m.mouldId,
+						   m.mouldName,
+						   deliverytaskId,
+						   type,
+						   startDate,
+						   endDate,
+						   intervalDays,
+						   orderTime,
+						   mealTypeId,
+						   mealtypeName
+					FROM Ep_MouldOrg,EP_Mould m
+					WHERE Ep_MouldOrg.mouldId = m.mouldId AND 
+					      CONVERT(varchar(100), GETDATE(), 112)>=startDate AND
+					      CONVERT(varchar(100), GETDATE(), 112) <=endDate AND 
+					      orgId=:orgid
+				]]>
+			</value>
+		</property>
+		
+		<property name="SQL_SHOW_BOOKINGLIST">
+			<value>
+				<![CDATA[
+					SELECT EP_OrderLog.type,
+						   status,
+					       pk,
+					       EP_OrderLog.mouldName,
+					       CONVERT(varchar(10),EB_OrderCollect.deliveryDate, 23) AS deliveryDate,
+					       EB_OrderCollect.ref1,
+					       EB_OrderCollect.ref2,
+					       CONVERT(varchar(100), EP_OrderLog.createDate, 120) AS createDate,
+					       EP_OrderLog.createUserId,
+					       CONVERT(varchar(100), EP_OrderLog.lastupDate, 120) AS lastupDate,
+					       EP_OrderLog.lastupdateUserId
+					FROm EB_OrderCollect,Ep_Mould,EP_OrderLog
+					WHERE CONVERT(varchar(10),EB_OrderCollect.deliveryDate, 23)>=:startdate AND 
+					      CONVERT(varchar(10),EB_OrderCollect.deliveryDate, 23)<=:enddate AND
+					      EP_OrderLog.orgId=:orgid AND
+					      EB_OrderCollect.mouldId = Ep_Mould.mouldId AND
+					      EB_OrderCollect.orderId = EP_OrderLog.pk AND
+					      status= :status AND
+					      LEFT(Ep_Mould.mouldId,LEN(:mould))=:mould
+				    ORDER BY EB_OrderCollect.deliveryDate
+				]]>
+			</value>
+		</property>
+		<property name="SQL_SHOW_DELIVERY">
+			<value>
+				<![CDATA[
+					;WITH book(bookingId,supplierId,supplierName)AS(
+						SELECT distinct 
+							   bookingId,
+							   supplierId,
+							   supplierName
+						FROM EP_deliveryGoods
+						WHERE CONVERT(varchar(10),deliveryDate, 23)=CONVERT(varchar(10),:date, 23) AND 
+							  orgId=:orgid
+					),goods(bookingId,goodsId,orgId,supplierid,suppliername,ordercount,arrivecount,status)AS(
+						SELECT  EP_deliveryGoods.bookingId,
+								EP_deliveryGoods.goodsId,
+								EP_deliveryGoods.orgId,
+								EP_deliveryGoods.supplierId,
+								EP_deliveryGoods.supplierName,
+								EP_deliveryGoods.ordercount,
+								arrivecount,
+								status
+						FROM	EP_deliveryGoods,EB_SupplierDelCollect
+						WHERE	EP_deliveryGoods.bookingId= EB_SupplierDelCollect.ref1 AND
+								EB_SupplierDelCollect.bookingFlag = 1 AND 
+								EB_SupplierDelCollect.orgId = :orgid AND
+								EP_deliveryGoods.orgId = :orgid AND
+								EP_deliveryGoods.bookingId LIKE 'ZD%' 
+					)
+					SELECT 	book.bookingId AS bookingId,
+							goods.orgId AS orgId,
+							book.supplierId AS supplierId,
+							book.supplierName AS supplierName,
+							COUNT(goodsId) AS goodsCategoryNum,
+							SUM(ordercount) AS ordercount,
+							SUM(arrivecount) AS arrivecount,
+							goods.status AS status
+					FROM	book,goods
+					WHERE 	book.bookingId = goods.bookingId
+					GROUP 	BY book.bookingId,
+							goods.orgId,
+							book.supplierId,
+							book.supplierName,
+							goods.status
+				]]>
+			</value>
+		</property>
+		<!-- jiaself 2017-03-20 -->
+		<property name="SQL_SHOW_DELIVERYREF">
+			<value>
+				<![CDATA[
+					;WITH book(bookingId,supplierId,supplierName)AS(
+						SELECT distinct 
+							   bookingId,
+							   supplierId,
+							   supplierName
+						FROM EP_deliveryGoods
+						WHERE CONVERT(varchar(10),deliveryDate, 23)=CONVERT(varchar(10),:date, 23) AND 
+							  orgId=:orgid
+					),goods(bookingId,goodsId,orgId,supplierid,suppliername,ordercount,arrivecount,status)AS(
+						SELECT  EP_deliveryGoods.bookingId,
+								EP_deliveryGoods.goodsId,
+								EP_deliveryGoods.orgId,
+								EP_deliveryGoods.supplierId,
+								EP_deliveryGoods.supplierName,
+								EP_deliveryGoods.ordercount,
+								arrivecount,
+								status
+						FROM	EP_deliveryGoods
+						WHERE	EP_deliveryGoods.orgId = :orgid AND
+								EP_deliveryGoods.bookingId LIKE 'ZD%'
+					)
+					SELECT 	book.bookingId AS bookingId,
+							goods.orgId AS orgId,
+							book.supplierId AS supplierId,
+							book.supplierName AS supplierName,
+							COUNT(goodsId) AS goodsCategoryNum,
+							SUM(ordercount) AS ordercount,
+							SUM(arrivecount) AS arrivecount,
+							goods.status AS status
+					FROM	book,goods
+					WHERE 	book.bookingId = goods.bookingId
+					GROUP 	BY book.bookingId,
+							goods.orgId,
+							book.supplierId,
+							book.supplierName,
+							goods.status
+				]]>
+			</value>
+		</property>
+		<property name="SQL_SHOW_DISTRIBUTE">
+			<value>
+				<![CDATA[
+				
+					;WITH disCollect(bookingId,deliveryDate,deliveryTaskId,deliveryTaskName,orgId,orgName,totalMoney,status,ordercount,arrivecount,disCount)AS(
+						SELECT  
+								edd.bookingId,
+						        edc.deliveryDate,
+						        edc.deliveryTaskId,
+						        edc.deliveryTaskName,
+						        edc.orgId,
+						        edc.orgName,
+						        edc.totalMoney,
+						        edc.status,
+						        SUM(edd.ordercount) AS ordercount,
+						        SUM(edd.arrivecount) AS arrivecount,
+						        COUNT(edd.goodsId) AS disCount
+						FROM	EP_DeliveryCollect edc,EP_DeliveryDetail edd
+						WHERE	CONVERT(varchar(10),edc.deliveryDate, 23)=CONVERT(varchar(10),:date, 23)
+							    AND orgId = :orgid AND edd.bookingId = edc.bookingId
+				        GROUP BY   edc.deliveryDate,
+						        edc.deliveryTaskId,
+						        edc.deliveryTaskName,
+						        edc.orgId,
+						        edc.orgName,
+						        edc.totalMoney,
+						        edc.status,
+						        edd.bookingId
+						       
+					)
+					SELECT 	disCollect.bookingId AS bookingId,
+					        disCollect.deliveryDate AS deliveryDate,
+							disCollect.deliveryTaskId AS deliveryTaskId,
+							disCollect.deliveryTaskName AS deliveryTaskName,
+							disCollect.orgId AS orgId,
+							disCollect.orgName AS orgName,
+							disCollect.status AS status,
+							disCollect.disCount AS disCount,
+							disCollect.ordercount AS ordercount,
+							disCollect.arrivecount AS arrivecount,
+							disCollect.totalMoney AS totalMoney
+					FROM	disCollect,EP_DeliveryDetail edd
+					GROUP 	BY disCollect.bookingId, 
+					        disCollect.deliveryDate, 
+							disCollect.deliveryTaskId, 
+							disCollect.deliveryTaskName, 
+							disCollect.orgId, 
+							disCollect.orgName,
+							disCollect.status,
+							disCollect.ordercount,
+							disCollect.arrivecount,
+							disCollect.totalMoney,
+							disCollect.disCount
+							
+				]]>
+			</value>
+		</property>
+		<property name="SQL_GET_ISRETAILPRICE">
+			<value>
+				<![CDATA[
+					SELECT 
+					stateKey,stateValue 
+					FROM 
+					EP_SynState 
+					WHERE 
+					stateKey='isRetailPrice' 
+				]]>
+			</value>
+		</property> 
+	</bean>	
+</beans>

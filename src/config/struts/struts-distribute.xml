@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="distribute" namespace="/facorder/distribute" extends="struts-default,json-default">
+	
+	    <!-- 进入配送收货页面  Pc端-->
+		<action name="toPcDistribute" method="toPcDistribute" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result>/PC/distribute.jsp</result>
+		</action>
+	    <!-- 进入配送收货页面  手机端-->
+		<action name="toDistribute" method="toDistribute" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result>/distribute.jsp</result>
+		</action>
+		<!-- 获取数据源  汇总-->
+		<action name="toListDistribute" method="toListDistribute" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 获取数据源  明细-->
+		<action name="toDistributeDetail" method="toDistributeDetail" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 获取打印数据源  -->
+		<action name="toPrintList" method="toPrintList" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result>/PC/print.jsp</result>
+		</action>
+		<!-- 修改实收数量  -->
+		<action name="toChangeArriveCount" method="toChangeArriveCount" class="com.sr.facorder.server.distribute.action.DistributeAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="detail" method="toMdetail" class="com.sr.facorder.server.delivery.action.DeliveryAction">
+			<result>/distributeDetail.jsp</result>
+		</action>
+	</package>
+</struts>

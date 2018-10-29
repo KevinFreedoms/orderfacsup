@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- 导入配置属性文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<!-- 数据源 -->
+	<!-- C3P0是一个开放源代码的JDBC连接池，它在lib目录中与Hibernate一起发布,包括了实现jdbc3和jdbc2扩展规范说明的Connection 和Statement 池的DataSources 对象。 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<!-- 配置连接 -->
+		<property name="driverClass" value="${db_dirver}" />
+		<property name="jdbcUrl" value="${db_url}" />
+		<property name="user" value="${db_username}" />
+		<property name="password" value="${db_password}" />
+		
+		<!--连接关闭时默认将所有未提交的操作回滚。Default: false --> 
+		<property name="autoCommitOnClose" value="true" />
+		
+		<!--当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出 
+　　			SQLException,如设为0则无限期等待。单位毫秒。Default: 0 --> 
+		<property name="checkoutTimeout" value="18000" />
+		
+		<!--初始化时获取5个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3 --> 
+		<property name="initialPoolSize" value="3" />
+		
+		<!--连接池中保留的最小连接数。--> 
+		<property name="minPoolSize" value="2" />
+		
+		<!--连接池中保留的最大连接数。Default: 15 --> 
+		<property name="maxPoolSize" value="60" />
+		
+		<!--最大空闲时间,25200秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 --> 
+		<property name="maxIdleTime" value="25200" />
+		
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 --> 
+		<property name="acquireIncrement" value="5" />
+		
+		<!-- 将连接池的连接数保持在minpoolsize 必须小于maxIdleTime设置  默认值为0代表不处理  单位秒 --> 
+		<property name="maxIdleTimeExcessConnections" value="1800" />
+	</bean>
+
+	<!-- 配置事务管理器，绑定线程的连接,注意这里的dataSource和数据源的dataSource要一致，不然事务就没有作用了 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 声明事务 设置隔离级别-->
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>  
+	            <prop key="update*" >PROPAGATION_REQUIRED,-Exception</prop>  
+	            <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>  
+	            <prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>  
+	            <prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>  
+	            <prop key="get*">PROPAGATION_NEVER</prop>  
+			</props>
+		</property>
+	</bean>
+
+	<!-- 事务切面 -->
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+
+</beans>

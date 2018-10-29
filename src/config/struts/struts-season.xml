@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="season" namespace="/facorder/season" extends="struts-default,json-default">
+	
+	    <!-- 进入季节单品页面  Pc端-->
+		<action name="toPcSeason" method="toPcSeason" class="com.sr.facorder.server.season.action.SeasonAction">
+			<result>/PC/seasongoods.jsp</result>
+		</action>
+	    <!-- 进入季节单品页面  手机端-->
+		<action name="toSeason" method="toSeason" class="com.sr.facorder.server.season.action.SeasonAction">
+			<result>/seasongoods.jsp</result>
+		</action>
+		<!-- 获取数据源   List -->
+		<action name="toSeasonGoodsList" method="toSeasonGoodsList" class="com.sr.facorder.server.season.action.SeasonAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>
