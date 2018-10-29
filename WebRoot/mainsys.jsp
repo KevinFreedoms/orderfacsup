@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
     <div data-role="page">
         <div data-role="header" style="">
-            <a data-role="none" data-icon="back" title="返回上一页" rel="external" href="<%=basePath%>facorder/staff//ht">
+            <a data-role="none" data-icon="back" title="返回上一页" rel="external" href="<%=basePath%>facorder/staff/ht">
            	   <i class="am-header-icon am-icon-angle-left"></i>
            </a>
            <h1 style="font-size:16px;">后台管理</h1>
