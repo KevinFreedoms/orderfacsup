@@ -4,7 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<!-- 把struts2的对象工厂设置为spring -->
-	<constant name="struts.action.extension" value="action,do,xls,php,asp" />
+	<constant name="struts.action.extension" value="action,do,xls,php,asp," />
 	<constant name="struts.configuration.xml.reload" value="true" />
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
 	<constant name="struts.devMode" value="true" />
